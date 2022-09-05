@@ -4,7 +4,7 @@ import catchAsync from "../utils/catchAsync";
 export const add = catchAsync(async (req, res, next) => {
   const existing = await ListingFeatures.findOne({ name: req.body.name });
   if (existing) {
-    return res.status(201).json({
+    return res.json({
       success: false,
       message: "Listing Feature with this name already exists",
     });
@@ -12,13 +12,13 @@ export const add = catchAsync(async (req, res, next) => {
 
   const listingFeature = await ListingFeatures.create({ ...req.body });
   if (!listingFeature) {
-    return res.status(201).json({
+    return res.json({
       success: false,
       message: "Listing Feature could not be created",
     });
   }
 
-  return res.status(201).json({
+  return res.json({
     success: true,
     message: "Listing Feature added successfully",
     listingFeature,
@@ -43,14 +43,14 @@ export const update = catchAsync(async (req, res, next) => {
   );
 
   if (listingFeature) {
-    return res.status(200).json({
+    return res.json({
       success: true,
       message: "Listing Feature updated successfully",
       listingFeature,
     });
   }
 
-  return res.status(500).json({
+  return res.json({
     success: false,
     message: "Listing Feature could not be updated",
   });
@@ -59,13 +59,13 @@ export const update = catchAsync(async (req, res, next) => {
 export const getAll = catchAsync(async (req, res, next) => {
   const listingFeatures = await ListingFeatures.find();
   if (listingFeatures.length > 0) {
-    return res.status(201).json({
+    return res.json({
       success: true,
       message: "Listing Features found",
       listingFeatures,
     });
   }
-  return res.status(201).json({
+  return res.json({
     success: false,
     message: "Listing Feature Not found",
   });
@@ -74,13 +74,13 @@ export const getAll = catchAsync(async (req, res, next) => {
 export const get = catchAsync(async (req, res, next) => {
   const listingFeature = await ListingFeatures.findOne({ _id: req.params.id });
   if (!listingFeature) {
-    return res.status(201).json({
+    return res.json({
       success: false,
       message: "Listing Feature Not found",
     });
   }
 
-  return res.status(201).json({
+  return res.json({
     success: true,
     message: "Listing Feature found",
     listingFeature,
@@ -104,7 +104,7 @@ export const del = catchAsync(async (req, res, next) => {
     });
   }
 
-  return res.status(201).json({
+  return res.json({
     success: true,
     message: "Listing Feature deleted successfully",
     listingFeature,

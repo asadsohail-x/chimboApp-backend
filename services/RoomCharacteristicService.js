@@ -4,7 +4,7 @@ import catchAsync from "../utils/catchAsync";
 export const add = catchAsync(async (req, res, next) => {
   const existing = await RoomCharacteristics.findOne({ name: req.body.name });
   if (existing) {
-    return res.status(201).json({
+    return res.json({
       success: false,
       message: "Room Characteristics with this name already exists",
     });
@@ -12,13 +12,13 @@ export const add = catchAsync(async (req, res, next) => {
 
   const roomCharacteristic = await RoomCharacteristics.create({ ...req.body });
   if (!roomCharacteristic) {
-    return res.status(201).json({
+    return res.json({
       success: false,
       message: "Room Characteristic could not be created",
     });
   }
 
-  return res.status(201).json({
+  return res.json({
     success: true,
     message: "Room Characteristic added successfully",
     roomCharacteristic,
@@ -44,14 +44,14 @@ export const update = catchAsync(async (req, res, next) => {
   );
 
   if (roomCharacteristic) {
-    return res.status(200).json({
+    return res.json({
       success: true,
       message: "Room Characteristics updated successfully",
       roomCharacteristic,
     });
   }
 
-  return res.status(500).json({
+  return res.json({
     success: false,
     message: "Room Characteristics could not be updated",
   });
@@ -60,13 +60,13 @@ export const update = catchAsync(async (req, res, next) => {
 export const getAll = catchAsync(async (req, res, next) => {
   const roomCharacteristics = await RoomCharacteristics.find();
   if (roomCharacteristics.length > 0) {
-    return res.status(201).json({
+    return res.json({
       success: true,
       message: "Room Characteristics found",
       roomCharacteristics,
     });
   }
-  return res.status(201).json({
+  return res.json({
     success: false,
     message: "Room Characteristics Not found",
   });
@@ -77,13 +77,13 @@ export const get = catchAsync(async (req, res, next) => {
     _id: req.params.id,
   });
   if (!roomCharacteristic) {
-    return res.status(201).json({
+    return res.json({
       success: false,
       message: "Room Characteristics Not found",
     });
   }
 
-  return res.status(201).json({
+  return res.json({
     success: true,
     message: "Room Characteristics found",
     roomCharacteristic,
@@ -109,7 +109,7 @@ export const del = catchAsync(async (req, res, next) => {
     });
   }
 
-  return res.status(201).json({
+  return res.json({
     success: true,
     message: "Room Characteristics deleted successfully",
     roomCharacteristic,

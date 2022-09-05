@@ -4,7 +4,7 @@ import catchAsync from "../utils/catchAsync";
 export const add = catchAsync(async (req, res, next) => {
   const existing = await Specifications.findOne({ name: req.body.name });
   if (existing) {
-    return res.status(201).json({
+    return res.json({
       success: false,
       message: "Specification with this name already exists",
     });
@@ -12,13 +12,13 @@ export const add = catchAsync(async (req, res, next) => {
 
   const specification = await Specifications.create({ ...req.body });
   if (!specification) {
-    return res.status(201).json({
+    return res.json({
       success: false,
       message: "Specification could not be created",
     });
   }
 
-  return res.status(201).json({
+  return res.json({
     success: true,
     message: "Specification added successfully",
     specification,
@@ -44,14 +44,14 @@ export const update = catchAsync(async (req, res, next) => {
   );
 
   if (specification) {
-    return res.status(200).json({
+    return res.json({
       success: true,
       message: "Specification updated successfully",
       specification,
     });
   }
 
-  return res.status(500).json({
+  return res.json({
     success: false,
     message: "Specification could not be updated",
   });
@@ -60,13 +60,13 @@ export const update = catchAsync(async (req, res, next) => {
 export const getAll = catchAsync(async (req, res, next) => {
   const specifications = await Specifications.find();
   if (specifications.length > 0) {
-    return res.status(201).json({
+    return res.json({
       success: true,
       message: "Specifications found",
       specifications,
     });
   }
-  return res.status(201).json({
+  return res.json({
     success: false,
     message: "Specifications Not found",
   });
@@ -75,13 +75,13 @@ export const getAll = catchAsync(async (req, res, next) => {
 export const get = catchAsync(async (req, res, next) => {
   const specification = await Specifications.findOne({ _id: req.params.id });
   if (!specification) {
-    return res.status(201).json({
+    return res.json({
       success: false,
       message: "Specification Not found",
     });
   }
 
-  return res.status(201).json({
+  return res.json({
     success: true,
     message: "Specification found",
     specification,
@@ -105,7 +105,7 @@ export const del = catchAsync(async (req, res, next) => {
     });
   }
 
-  return res.status(201).json({
+  return res.json({
     success: true,
     message: "Speicfication deleted successfully",
     specification,

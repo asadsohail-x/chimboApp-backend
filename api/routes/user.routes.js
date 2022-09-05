@@ -7,14 +7,12 @@ import {
   updatePassword,
   get,
   del,
-  getPaginated,
-  uploadPfp,
-  updateLoc,
   block,
   unblock,
+  getAll,
 } from "../../services/UserService";
 
-import imageUploader from "../../utils/userPfpUploader";
+// import imageUploader from "../../utils/userPfpUploader";
 import auth from "../middleware/auth";
 
 /* 
@@ -60,16 +58,15 @@ route.post("/login", login);
 route.put("/add", add);
 route.patch("/update", auth, update);
 route.patch("/update-password", auth, updatePassword);
-route.get("/getAll", auth, getPaginated);
 route.get("/get/:id", auth, get);
+route.get("/getAll", auth, getAll);
 route.delete("/delete", auth, del);
-route.patch("/updateLoc", auth, updateLoc);
 route.patch("/block", auth, block);
 route.patch("/unblock", auth, unblock);
-route.put(
-  "/upload-pfp",
-  [auth, (...rest) => imageUploader("profile-photo", ...rest)],
-  uploadPfp
-);
+// route.put(
+//   "/upload-pfp",
+//   [auth, (...rest) => imageUploader("profile-photo", ...rest)],
+//   uploadPfp
+// );
 
 export default route;

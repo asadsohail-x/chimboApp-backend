@@ -1,10 +1,10 @@
-import PropertyTypes from "../models/PropertyTypeModal";
+import PropertyTypes from "../models/PropertyTypeModel";
 import catchAsync from "../utils/catchAsync";
 
 export const add = catchAsync(async (req, res, next) => {
   const existing = await PropertyTypes.findOne({ name: req.body.name });
   if (existing) {
-    return res.status(201).json({
+    return res.json({
       success: false,
       message: "Property Type with this name already exists",
     });
@@ -12,13 +12,13 @@ export const add = catchAsync(async (req, res, next) => {
 
   const propertyType = await PropertyTypes.create({ ...req.body });
   if (!propertyType) {
-    return res.status(201).json({
+    return res.json({
       success: false,
       message: "Property Type could not be created",
     });
   }
 
-  return res.status(201).json({
+  return res.json({
     success: true,
     message: "Property Type added successfully",
     propertyType,
@@ -43,14 +43,14 @@ export const update = catchAsync(async (req, res, next) => {
   );
 
   if (propertyType) {
-    return res.status(200).json({
+    return res.json({
       success: true,
       message: "Property Type updated successfully",
       propertyType,
     });
   }
 
-  return res.status(500).json({
+  return res.json({
     success: false,
     message: "Property Type could not be updated",
   });
@@ -59,13 +59,13 @@ export const update = catchAsync(async (req, res, next) => {
 export const getAll = catchAsync(async (req, res, next) => {
   const propertyTypes = await PropertyTypes.find();
   if (propertyTypes.length > 0) {
-    return res.status(201).json({
+    return res.json({
       success: true,
       message: "Property Types found",
       propertyTypes,
     });
   }
-  return res.status(201).json({
+  return res.json({
     success: false,
     message: "Property Types Not found",
   });
@@ -74,13 +74,13 @@ export const getAll = catchAsync(async (req, res, next) => {
 export const get = catchAsync(async (req, res, next) => {
   const propertyType = await PropertyTypes.findOne({ _id: req.params.id });
   if (!propertyType) {
-    return res.status(201).json({
+    return res.json({
       success: false,
       message: "Property Type Not found",
     });
   }
 
-  return res.status(201).json({
+  return res.json({
     success: true,
     message: "Property Type found",
     propertyType,
@@ -104,7 +104,7 @@ export const del = catchAsync(async (req, res, next) => {
     });
   }
 
-  return res.status(201).json({
+  return res.json({
     success: true,
     message: "Property Type deleted successfully",
     propertyType,

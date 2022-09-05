@@ -4,7 +4,7 @@ import catchAsync from "../utils/catchAsync";
 export const add = catchAsync(async (req, res, next) => {
   const existing = await Genders.findOne({ name: req.body.name });
   if (existing) {
-    return res.status(201).json({
+    return res.json({
       success: false,
       message: "Gender with this name already exists",
     });
@@ -12,13 +12,13 @@ export const add = catchAsync(async (req, res, next) => {
 
   const gender = await Genders.create({ ...req.body });
   if (!gender) {
-    return res.status(201).json({
+    return res.json({
       success: false,
       message: "Gender could not be created",
     });
   }
 
-  return res.status(201).json({
+  return res.json({
     success: true,
     message: "Gender added successfully",
     gender,
@@ -43,14 +43,14 @@ export const update = catchAsync(async (req, res, next) => {
   );
 
   if (gender) {
-    return res.status(200).json({
+    return res.json({
       success: true,
       message: "Gender updated successfully",
       gender,
     });
   }
 
-  return res.status(500).json({
+  return res.json({
     success: false,
     message: "Gender could not be updated",
   });
@@ -59,13 +59,13 @@ export const update = catchAsync(async (req, res, next) => {
 export const getAll = catchAsync(async (req, res, next) => {
   const genders = await Genders.find();
   if (genders.length > 0) {
-    return res.status(201).json({
+    return res.json({
       success: true,
       message: "Genders found",
       genders,
     });
   }
-  return res.status(201).json({
+  return res.json({
     success: false,
     message: "Genders Not found",
   });
@@ -74,13 +74,13 @@ export const getAll = catchAsync(async (req, res, next) => {
 export const get = catchAsync(async (req, res, next) => {
   const gender = await Genders.findOne({ _id: req.params.id });
   if (!gender) {
-    return res.status(201).json({
+    return res.json({
       success: false,
       message: "Genders Not found",
     });
   }
 
-  return res.status(201).json({
+  return res.json({
     success: true,
     message: "Gender found",
     gender,
