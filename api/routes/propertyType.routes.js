@@ -7,13 +7,15 @@ import {
   get,
   del,
 } from "../../services/PropertyTypeService";
-// const { authenticate } = require("../middleware/auth");
+import auth from '../middleware/auth'
 
 /***************Routes************/
-route.put("/add", add);
-route.patch("/update", update);
 route.get("/getAll", getAll);
 route.get("/get/:id", get);
-route.delete("/delete/:id", del);
+
+route.put("/add", auth, add);
+route.patch("/update", auth, update);
+route.delete("/delete/:id", auth, del);
+
 
 export default route;

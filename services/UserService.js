@@ -4,6 +4,9 @@ import mongoose from "mongoose";
 import catchAsync from "../utils/catchAsync";
 import jwt from "jsonwebtoken";
 import { hash, check } from "../utils/crypt";
+import bcrypt from "bcrypt";
+
+const { hashSync } = bcrypt
 
 //Login
 export const login = catchAsync(async (req, res, next) => {
@@ -33,8 +36,7 @@ export const login = catchAsync(async (req, res, next) => {
     user: {
       id: user._id,
       email: user.email,
-      username: user.username,
-      name: `${user.firstName} ${user.lastName}`,
+      name: user.name,
       token,
     },
   });
@@ -48,7 +50,11 @@ export const add = catchAsync(async (req, res, next) => {
     message: "Email already exists"
   })
 
-  const user = await Users.create({ ...req.body });
+  const userData = JSON.parse(JSON.stringify(req.body))
+
+  userData.password = hashSync(userData.password, 10)
+
+  const user = await Users.create(userData);
   if (!user) {
     return res.json({
       success: false,
@@ -147,7 +153,7 @@ export const get = catchAsync(async (req, res, next) => {
   });
   if (!user) return res.json({
     success: false,
-    message: "Users not found"
+    message: "User not found"
   })
 
   return res.json({
@@ -159,7 +165,7 @@ export const get = catchAsync(async (req, res, next) => {
 
 //Delete
 export const del = catchAsync(async (req, res, next) => {
-  const existing = await Users.findOne({ _id: req.body.id });
+  const existing = await Users.findOne({ _id: req.params.id });
   if (!existing) {
     return res.json({
       success: false,
@@ -167,7 +173,7 @@ export const del = catchAsync(async (req, res, next) => {
     })
   }
 
-  const deletedUser = await Users.findOneAndDelete({ _id: req.body.id });
+  const deletedUser = await Users.findOneAndDelete({ _id: req.params.id });
   if (!deletedUser) return res.json({
     success: false,
     message: "User not found"
@@ -236,9 +242,11 @@ export const updatePassword = catchAsync(async (req, res, next) => {
     message: "User not found"
   })
 
-  const user = await updateUser(req.body.id, {
-    password: hash(req.body.password),
-  });
+  console.log(req.body.newPassword);
+
+  const user = await Users.findByIdAndUpdate(req.body.id, {
+    password: hashSync(req.body.newPassword, 10),
+  }, { new: true });
 
   if (!user) return res.json({
     success: false,
@@ -251,6 +259,16 @@ export const updatePassword = catchAsync(async (req, res, next) => {
     user,
   });
 });
+
+export const uploadPfp = catchAsync(async (req, res) => {
+  if (!req.file) res.json({
+    success: false,
+    message: "Profile Picture not uploaded."
+  });
+
+  const pfp = req.file.path;
+  res.json({ success: true, message: "Profile Picture Uploaded", pfp });
+})
 
 async function checkEmail(email) {
   let result = await Users.find({ email });

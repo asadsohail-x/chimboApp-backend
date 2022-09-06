@@ -10,9 +10,10 @@ import {
   block,
   unblock,
   getAll,
+  uploadPfp,
 } from "../../services/UserService";
 
-// import imageUploader from "../../utils/userPfpUploader";
+import imageUploader from "../../utils/userImageUploader";
 import auth from "../middleware/auth";
 
 /* 
@@ -54,19 +55,20 @@ import auth from "../middleware/auth";
 */
 
 /***************Routes************/
-route.post("/login", login);
+route.get("/getAll", getAll);
+route.get("/get/:id", get);
 route.put("/add", add);
+route.post("/login", login);
+
 route.patch("/update", auth, update);
-route.patch("/update-password", auth, updatePassword);
-route.get("/get/:id", auth, get);
-route.get("/getAll", auth, getAll);
-route.delete("/delete", auth, del);
+route.patch("/update-password", updatePassword);
+route.delete("/delete/:id", auth, del);
 route.patch("/block", auth, block);
 route.patch("/unblock", auth, unblock);
-// route.put(
-//   "/upload-pfp",
-//   [auth, (...rest) => imageUploader("profile-photo", ...rest)],
-//   uploadPfp
-// );
+route.put(
+  "/uploadPfp",
+  [auth, (...rest) => imageUploader("profile-photo", ...rest)],
+  uploadPfp
+);
 
 export default route;

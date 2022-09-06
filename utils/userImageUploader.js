@@ -1,11 +1,11 @@
-const multer = require("multer");
-const { v4: uuidv4 } = require("uuid");
-const path = require("path");
+import multer from "multer";
+import { v4 as uuidv4 } from "uuid";
+import { extname } from "path";
 
 const storage = multer.diskStorage({
   destination: "./images/profile-photos",
   filename: (_, file, cb) => {
-    cb(null, uuidv4() + "_" + Date.now() + path.extname(file.originalname));
+    cb(null, uuidv4() + "_" + Date.now() + extname(file.originalname));
   },
 });
 
@@ -18,7 +18,7 @@ const fileFilter = (_, file, cb) => {
 
 const uploader = multer({ storage, fileFilter });
 
-module.exports = (fieldName, req, res, next) => {
+export default (fieldName, req, res, next) => {
   const upload = uploader.single(fieldName);
 
   upload(req, res, (e) => {

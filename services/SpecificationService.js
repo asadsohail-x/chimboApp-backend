@@ -1,7 +1,7 @@
 import Specifications from "../models/SpecificationModel";
 import catchAsync from "../utils/catchAsync";
 
-export const add = catchAsync(async (req, res, next) => {
+export const add = catchAsync(async (req, res) => {
   const existing = await Specifications.findOne({ name: req.body.name });
   if (existing) {
     return res.json({
@@ -25,7 +25,7 @@ export const add = catchAsync(async (req, res, next) => {
   });
 });
 
-export const update = catchAsync(async (req, res, next) => {
+export const update = catchAsync(async (req, res) => {
   const existing = await Specifications.findOne({ _id: req.body.id });
   if (!existing) {
     return res.json({
@@ -57,7 +57,7 @@ export const update = catchAsync(async (req, res, next) => {
   });
 });
 
-export const getAll = catchAsync(async (req, res, next) => {
+export const getAll = catchAsync(async (req, res) => {
   const specifications = await Specifications.find();
   if (specifications.length > 0) {
     return res.json({
@@ -72,7 +72,7 @@ export const getAll = catchAsync(async (req, res, next) => {
   });
 });
 
-export const get = catchAsync(async (req, res, next) => {
+export const get = catchAsync(async (req, res) => {
   const specification = await Specifications.findOne({ _id: req.params.id });
   if (!specification) {
     return res.json({
@@ -88,7 +88,7 @@ export const get = catchAsync(async (req, res, next) => {
   });
 });
 
-export const del = catchAsync(async (req, res, next) => {
+export const del = catchAsync(async (req, res) => {
   const existing = await Specifications.findOne({ _id: req.params.id });
   if (!existing) {
     return res.json({

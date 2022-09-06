@@ -1,7 +1,7 @@
 import ListingTypes from "../models/ListingTypeModel";
 import catchAsync from "../utils/catchAsync";
 
-export const add = catchAsync(async (req, res, next) => {
+export const add = catchAsync(async (req, res) => {
   const existing = await ListingTypes.findOne({ name: req.body.name });
   if (existing) {
     return res.json({
@@ -25,7 +25,7 @@ export const add = catchAsync(async (req, res, next) => {
   });
 });
 
-export const update = catchAsync(async (req, res, next) => {
+export const update = catchAsync(async (req, res) => {
   const existing = await ListingTypes.findOne({ _id: req.body.id });
   if (!existing) {
     return res.json({
@@ -56,7 +56,7 @@ export const update = catchAsync(async (req, res, next) => {
   });
 });
 
-export const getAll = catchAsync(async (req, res, next) => {
+export const getAll = catchAsync(async (req, res) => {
   const listingTypes = await ListingTypes.find();
   if (listingTypes.length > 0) {
     return res.json({
@@ -71,7 +71,7 @@ export const getAll = catchAsync(async (req, res, next) => {
   });
 });
 
-export const get = catchAsync(async (req, res, next) => {
+export const get = catchAsync(async (req, res) => {
   const listingType = await ListingTypes.findOne({ _id: req.params.id });
   if (!listingType) {
     return res.json({
@@ -87,7 +87,7 @@ export const get = catchAsync(async (req, res, next) => {
   });
 });
 
-export const del = catchAsync(async (req, res, next) => {
+export const del = catchAsync(async (req, res) => {
   const existing = await ListingTypes.findOne({ _id: req.params.id });
   if (!existing) {
     return res.json({
