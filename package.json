@@ -8,7 +8,8 @@
     "nodemon": "nodemon --exec npm start",
     "test": "echo \"Error: no test specified\" && exit 1",
     "debug": "ndb server.js",
-    "start": "nodemon --experimental-specifier-resolution=node server.js"
+    "start": "nodemon --es-module-specifier-resolution=node server.js",
+    "deploy": "node --es-module-specifier-resolution=node server.js"
   },
   "author": "Asad Sohail",
   "license": "ISC",
