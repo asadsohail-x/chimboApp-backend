@@ -65,16 +65,27 @@ export const login = catchAsync(async (req, res, next) => {
 });
 
 export const updatePassword = catchAsync(async (req, res, next) => {
-  const existing = await Admins.findOne({ _id: req.body.id });
+
+  const { id, prevPassword, password } = req.body;
+
+  const existing = await Admins.findOne({ _id: id });
   if (!existing) return res.json({
     success: false,
     message: "Admin not found"
   })
 
+  if (prevPassword) {
+    if (!check(password, existing.password))
+      return res.json({
+        success: false,
+        message: "Provided Old Password is Incorrect"
+      })
+  }
+
   const admin = await Admins.findByIdAndUpdate(
-    req.body.id,
+    id,
     {
-      password: hash(req.body.password),
+      password: hash(password),
     },
     { new: true }
   );
