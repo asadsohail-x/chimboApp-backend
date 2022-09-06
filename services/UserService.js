@@ -10,9 +10,9 @@ const { hashSync } = bcrypt
 
 //Login
 export const login = catchAsync(async (req, res, next) => {
-  const { username, password } = req.body;
+  const { email, password } = req.body;
 
-  const user = await Users.findOne({ username });
+  const user = await Users.findOne({ email });
   if (!user) return res.json({
     success: false,
     message: "Incorrect Email"
@@ -25,7 +25,7 @@ export const login = catchAsync(async (req, res, next) => {
     });
 
   const token = jwt.sign(
-    { id: user._id, email: user.email, username: user.username, role: "USER" },
+    { id: user._id, email: user.email, role: "USER" },
     process.env.JWT_SECRET,
     { expiresIn: "700h" }
   );
